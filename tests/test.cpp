@@ -10,6 +10,7 @@ struct MockTrans : public Transaction{
     MOCK_METHOD0(fee, int());
 };
 
+
 TEST(Transaction, TransMockTest1){
     MockTrans Acc_Trans1;
     MockAcc Human1(1, 10000);
