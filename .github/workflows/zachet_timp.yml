@@ -1,0 +1,38 @@
+name: ZACHETik
+on:
+  push:
+
+jobs:
+  Build:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+
+        - name: build banking
+          shell: bash
+          run: |
+            git submodule update --init --recursive && cd banking
+            cmake -H. -B_build && cmake --build _build
+          
+        - name: update & install
+          run:  |
+            git submodule update --init
+            sudo apt install lcov && sudo apt install g++-7
+          
+        - name: StartCov
+          shell: bash
+          run: |
+            mkdir _build && cd _build
+            CXX=/usr/bin/g++-7 cmake -DCOVERAGE=1 ..
+            cmake --build .
+            ./Test
+            lcov -t "banking" -o lcov.info -c -d .
+            lcov --remove lcov.info '/home/runner/work/lab05/lab05/third-party/gtest/*' -o lcov.info 
+            lcov --remove lcov.info '/usr/include/*' -o lcov.info
+          
+        - name: FinalCov
+          uses: coverallsapp/github-action@master
+          with:
+            github-token: ${{ secrets.github_token }}
+            path-to-lcov: ./_build/lcov.info
+            coveralls-endpoint: https://coveralls.io
