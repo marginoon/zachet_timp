@@ -21,61 +21,6 @@ struct MockTrans : public Transaction{
     MOCK_METHOD0(fee, int());
 };
 
-TEST(Account, AccMockTest1){
-    MockAcc BankAccount(1, 15000);
-    EXPECT_CALL(BankAccount, ChangeBalance(testing::_)).Times(1);
-    EXPECT_CALL(BankAccount, GetBalance()).Times(2);
-    EXPECT_CALL(BankAccount, id()).Times(2);
-    EXPECT_CALL(BankAccount, Lock()).Times(1);
-    BankAccount.GetBalance();
-    BankAccount.id();
-    BankAccount.Lock();
-    BankAccount.ChangeBalance(5000);
-    BankAccount.GetBalance();
-    BankAccount.id();
-}
-
-TEST(Account, AccMockTest2){
-    MockAcc BankAccount2(2, 100000);
-    EXPECT_CALL(BankAccount2, Lock()).Times(1);
-    EXPECT_CALL(BankAccount2, GetBalance()).Times(2);
-    EXPECT_CALL(BankAccount2, ChangeBalance(testing::_)).Times(2);
-    EXPECT_CALL(BankAccount2, Unlock()).Times(1);
-    BankAccount2.Lock();
-    BankAccount2.GetBalance();
-    BankAccount2.ChangeBalance(100000);
-    BankAccount2.GetBalance();
-    BankAccount2.Unlock();
-    BankAccount2.ChangeBalance(1000);
-}
-
-
-TEST(Account, GetBalance_and_ID){
-    Account BankAccount(1, 15000);
-
-    EXPECT_EQ(BankAccount.GetBalance(), 15000);
-    EXPECT_EQ(BankAccount.id(), 1);
-
-    BankAccount.Lock();
-    BankAccount.ChangeBalance(5000);
-
-    EXPECT_EQ(BankAccount.GetBalance(), 20000);
-    EXPECT_EQ(BankAccount.id(), 1);
-}
-
-TEST(Account, ChangeBalance_and_Lock){
-    Account BankAccount2(2, 100000);
-    BankAccount2.Lock();
-
-    EXPECT_EQ(BankAccount2.GetBalance(), 100000);
-
-    BankAccount2.ChangeBalance(100000);
-
-    EXPECT_EQ(BankAccount2.GetBalance(), 200000);
-
-    BankAccount2.Unlock();
-    ASSERT_ANY_THROW(BankAccount2.ChangeBalance(1000));
-}
 
 TEST(Transaction, TransMockTest1){
     MockTrans Acc_Trans1;
