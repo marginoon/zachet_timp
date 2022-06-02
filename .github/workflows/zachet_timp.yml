@@ -27,7 +27,7 @@ jobs:
             cmake --build .
             ./Test
             lcov -t "banking" -o lcov.info -c -d .
-            lcov --remove lcov.info '/home/runner/work/lab05/lab05/third-party/gtest/*' -o lcov.info 
+            lcov --remove lcov.info '/home/runner/work/zachet_timp/zachet_timp/third-party/gtest/*' -o lcov.info 
             lcov --remove lcov.info '/usr/include/*' -o lcov.info
           
         - name: FinalCov
